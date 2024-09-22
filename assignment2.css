@@ -1,0 +1,35 @@
+body{
+	background: -webkit-linear-gradient(right, #ff0000, #000000, #ff0000);
+	background: -moz-linear-gradient(right, #cc0000, #000000, #cc0000);
+	background: -o-linear-gradient(right, #a50000, #000000, #a50000);
+	background: linear-gradient(to right, #5c0000, #000000, #5c0000);
+	color: #00FF00;
+}
+
+h1{
+	color: #ffffff;
+	text-shadow:0 0 2px rgb(255, 255, 255);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, arial;
+}
+
+h2{
+	color: #ffffff;
+	text-shadow:0 0 2px rgb(255, 255, 255);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, arial;
+}
+
+h3{
+	color: #ffffff;
+	text-shadow:0 0 2px rgb(255, 255, 255);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, arial;
+}
+
+p{
+	color: #ffffff;
+	text-shadow:0 0 2px rgb(255, 255, 255);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, arial;
+}
+
+a:visited{
+	color: aqua;
+}
