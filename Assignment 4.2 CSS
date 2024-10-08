@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif; /* Set the font for the entire page */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    background-color: #f0f0f0; /* Light grey background */
+}
+
+header {
+    background-color: #333; /* Dark background for header */
+    color: white; /* White text for header */
+    padding: 20px; /* Add padding inside the header */
+    text-align: center; /* Center the text */
+}
+
+main {
+    padding: 20px; /* Padding for the main content */
+}
+
+.coach {
+    background-color: white; /* White background for coach cards */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Inner padding */
+    margin: 10px 0; /* Space between coach cards */
+}
+
+button {
+    background-color: #007BFF; /* Blue button */
+    color: white; /* White text on button */
+    border: none; /* No border */
+    padding: 10px; /* Padding inside button */
+    border-radius: 5px; /* Rounded corners for button */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+footer {
+    text-align: center; /* Center text in footer */
+    padding: 20px; /* Padding for footer */
+    background-color: #333; /* Same dark background as header */
+    color: white; /* White text for footer */
+    position: relative; /* Position for footer */
+    bottom: 0; /* Align footer to the bottom */
+    width: 100%; /* Full width for footer */
+}
