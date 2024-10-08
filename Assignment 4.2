@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Character encoding for the HTML document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design for mobile devices -->
+    <title>Find Your Gaming Coach</title> <!-- Title of the webpage shown in the browser tab -->
+    <link rel="stylesheet" href="assignment4.2.css">
+</head>
+<body>
+    <header>
+        <h1>Find Your Gaming Coach</h1> <!-- Main title of the website -->
+        <p>Get better at your favorite games!</p> <!-- Subtitle or description -->
+    </header>
+
+    <main>
+        <section id="search"> <!-- Section for search functionality -->
+            <h2>Search for a Coach</h2> <!-- Heading for the search section -->
+            <!-- Input field for searching coaches by game specialty -->
+            <input type="text" id="gameSearch" placeholder="Type a game name..." onkeyup="searchCoaches()"> 
+        </section>
+
+        <section id="coaches"> <!-- Section containing the list of coaches -->
+            <h2>Available Coaches</h2> <!-- Heading for the coaches section -->
+            <!-- Coach entries with data attributes for easier filtering -->
+            <div class="coach" data-specialty="Game A"> <!-- Coach card with game specialty -->
+                <h3>Coach Name 1</h3> <!-- Name of the first coach -->
+                <p>Specialty: Game A</p> <!-- Specialty of the first coach -->
+                <!-- Button to contact the coach -->
+                <button onclick="contactCoach('coach1@example.com')">Contact</button> 
+            </div>
+            <div class="coach" data-specialty="Game B"> <!-- Second coach card -->
+                <h3>Coach Name 2</h3> <!-- Name of the second coach -->
+                <p>Specialty: Game B</p> <!-- Specialty of the second coach -->
+                <!-- Button to contact the coach -->
+                <button onclick="contactCoach('coach2@example.com')">Contact</button> 
+            </div>
+            <!-- Additional coaches can be added here -->
+        </section>
+
+        <section id="signup"> <!-- Section for potential coaches to sign up -->
+            <h2>Become a Coach</h2> <!-- Heading for the signup section -->
+            <form> <!-- Form for entering coach information -->
+                <label for="name">Your Name:</label> <!-- Label for name input -->
+                <input type="text" id="name" required> <!-- Input for coach's name, marked as required -->
+                
+                <label for="game">Game Specialty:</label> <!-- Label for game specialty input -->
+                <input type="text" id="game" required> <!-- Input for specialty game, marked as required -->
+                
+                <button type="submit">Sign Up</button> <!-- Button to submit the signup form -->
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Find Your Gaming Coach</p> <!-- Footer with copyright information -->
+    </footer>
+
+    <script>
+        // Function to handle contacting the coach
+        function contactCoach(email) {
+            // Redirect to the user's email client with the provided email
+            window.location.href = `mailto:${email}`;
+        }
+
+        // Function to search for coaches based on the game specialty
+        function searchCoaches() {
+            // Get the search input value, converting it to lowercase for case-insensitive comparison
+            const input = document.getElementById('gameSearch').value.toLowerCase(); 
+            // Retrieve all coach elements in the coaches section
+            const coachElements = document.querySelectorAll('.coach'); 
+
+            // Iterate through each coach card to check for a match with the input
+            coachElements.forEach(coach => {
+                // Get the specialty of the coach from the data attribute
+                const specialty = coach.getAttribute('data-specialty').toLowerCase(); 
+                // Determine if the input matches the coach's specialty
+                if (specialty.includes(input)) {
+                    coach.style.display = 'block'; // Show the coach card if there is a match
+                } else {
+                    coach.style.display = 'none'; // Hide the coach card if there is no match
+                }
+            });
+        }
+    </script>
+</body>
+</html>
