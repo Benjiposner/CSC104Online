@@ -1,0 +1,52 @@
+body {
+    font-family: 'Verdana', sans-serif; /* Changed font for a slightly different style */
+    margin: 0;
+    padding: 0;
+    background-color: #e8e8e8; /* Changed background color to a slightly lighter grey */
+}
+
+header {
+    background-color: #444; /* Slightly lighter dark background for the header */
+    color: #f2f2f2; /* Softer white text */
+    padding: 30px; /* Increased padding */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added a subtle shadow effect */
+}
+
+main {
+    padding: 25px; /* Slightly increased padding for the main content */
+}
+
+.coach {
+    background-color: #fff; /* White background for coach cards */
+    border: 2px solid #ddd; /* Thicker, lighter grey border */
+    border-radius: 8px; /* Increased corner rounding */
+    padding: 20px; /* Slightly increased inner padding */
+    margin: 15px 0; /* Added more space between coach cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Soft shadow for coach cards */
+}
+
+button {
+    background-color: #28a745; /* Changed button color to green */
+    color: #ffffff;
+    border: 1px solid #1c7a31; /* Added a subtle border to the button */
+    padding: 12px; /* Increased padding */
+    border-radius: 8px; /* Increased corner rounding */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Added smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+footer {
+    text-align: center;
+    padding: 25px; /* Increased padding */
+    background-color: #444; /* Adjusted footer background color */
+    color: #f2f2f2;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    border-top: 2px solid #333; /* Added a top border for separation */
+}
