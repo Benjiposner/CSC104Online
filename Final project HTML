@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadata and styles for the document -->
+    <meta charset="UTF-8"> <!-- Sets the character encoding for the document to UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configures the viewport for responsive design -->
+    <title>Gamify</title> <!-- Title for the browser tab -->
+
+    <link rel="stylesheet" href="FinalProject.css">
+    <!-- Internal CSS styles to define the look and layout -->
+    <style>
+        /* Basic styles for the body and general layout */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f9f9f9; }
+        header, main, footer { margin-bottom: 20px; } /* Adds spacing between header, main, and footer sections */
+        header h1 { font-size: 2em; } /* Larger font size for the main title */
+
+        /* Styles for the navigation menu */
+        nav {
+            margin-bottom: 20px; /* Spacing below the navigation */
+        }
+        nav ul {
+            list-style-type: none; /* Remove bullet points from the list */
+            padding: 0; /* Remove default padding */
+        }
+        nav ul li {
+            display: inline; /* Display items inline */
+            margin-right: 15px; /* Space between items */
+        }
+        nav a {
+            text-decoration: none; /* Remove underline from links */
+            color: #007BFF; /* Link color */
+        }
+        nav a:hover {
+            text-decoration: underline; /* Underline links on hover */
+        }
+
+        /* Styles for coach cards */
+        .coach-card { 
+            display: flex; /* Flexbox layout for aligning thumbnail and text side-by-side */
+            align-items: center; /* Vertically aligns items to the center */
+            padding: 15px; /* Padding inside the card */
+            background: #fff; /* White background */
+            border-radius: 5px; /* Rounded corners */
+            border: 1px solid #ccc; /* Light grey border */
+            margin: 10px 0; /* Margin between cards */
+        }
+        
+        /* Styles for the coach thumbnail image */
+        .coach-card img { 
+            width: 80px; /* Thumbnail width */
+            height: 80px; /* Thumbnail height */
+            border-radius: 50%; /* Circular thumbnail */
+            margin-right: 15px; /* Space between image and text */
+        }
+
+        /* Styles for the aside section */
+        aside {
+            background: #e9ecef; /* Light grey background for the aside */
+            padding: 15px; /* Padding inside the aside */
+            border-radius: 5px; /* Rounded corners */
+            margin: 20px 0; /* Margin above and below the aside */
+        }
+
+        /* Styles for the footer */
+        footer {
+            background-color: #007BFF; /* Blue background for the footer */
+            color: white; /* White text color */
+            padding: 10px; /* Padding inside the footer */
+            text-align: center; /* Center align the footer text */
+        }
+        footer a {
+            color: #FFD700; /* Gold color for links in the footer */
+            text-decoration: none; /* Remove underline from footer links */
+        }
+        footer a:hover {
+            text-decoration: underline; /* Underline links on hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Page header with title and navigation menu -->
+    <header>
+        <h1>Find the Perfect Gaming Coach</h1> <!-- Main header title -->
+        <p>Enhance your skills with expert guidance!</p> <!-- Short description for the header -->
+
+        <!-- Navigation menu -->
+        <nav>
+            <ul>
+                <li><a href="#search">Search Coaches</a></li> <!-- Link to search coaches section -->
+                <li><a href="#available">Available Coaches</a></li> <!-- Link to available coaches section -->
+                <li><a href="#signup">Sign Up as a Coach</a></li> <!-- Link to sign up section -->
+                <li><a href="#about">About Us</a></li> <!-- Link to about us section -->
+                <li><a href="#testimonials">Testimonials</a></li> <!-- Link to testimonials section -->
+                <li><a href="#contact">Contact Us</a></li> <!-- Link to contact us section -->
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content area containing various sections -->
+    <main>
+        <!-- Search section for finding coaches by their game specialty -->
+        <section id="search">
+            <h2>Search Coaches</h2> <!-- Search section title -->
+            <input type="text" id="searchField" placeholder="Search by game..." oninput="filterCoaches()"> <!-- Input box to type search keywords -->
+        </section>
+
+        <!-- Section displaying the list of available coaches -->
+        <section id="available">
+            <h2>Available Coaches</h2> <!-- Section title for coaches list -->
+            <div id="coachList"> <!-- Container for coach entries -->
+                <!-- Coach card #1 with a placeholder thumbnail -->
+                <div class="coach-card" data-game="Game A">
+                    <img src="https://purepng.com/public/uploads/thumbnail//new-dark-bomber-fortnite-skin-hon.png" alt="John Doe"> <!-- Placeholder thumbnail -->
+                    <div>
+                        <h3>FidoMaster</h3> <!-- Coach name -->
+                        <p>Expertise: Fortnite </p> <!-- Expertise description -->
+                        <button onclick="sendEmail('john@example.com')">Contact</button> <!-- Button to contact the coach -->
+                    </div>
+                </div>
+                <!-- Coach card #2 with a placeholder thumbnail -->
+                <div class="coach-card" data-game="Game B">
+                    <img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/e7099cc13a665ed2b556d514e50984393ed49967-616x822.png" alt="Jane Smith"> <!-- Placeholder thumbnail -->
+                    <div>
+                        <h3>Valobeast</h3> <!-- Coach name -->
+                        <p>Expertise: Valorant </p> <!-- Expertise description -->
+                        <button onclick="sendEmail('jane@example.com')">Contact</button> <!-- Button to contact the coach -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section for signing up as a new coach -->
+        <section id="signup">
+            <h2>Sign Up as a Coach</h2> <!-- Section title for the signup form -->
+            <form id="coachForm" onsubmit="registerCoach(event)"> <!-- Form for new coach sign-up -->
+                <label>Name:</label> <!-- Label for name input -->
+                <input type="text" id="coachName" required> <!-- Input field for coach's name (required) -->
+                
+                <label>Email:</label> <!-- Label for email input -->
+                <input type="email" id="coachEmail" required> <!-- Input field for coach's email (required) -->
+                
+                <label>Game Specialty:</label> <!-- Label for game specialty input -->
+                <input type="text" id="coachGame" required> <!-- Input field for coach's game specialty (required) -->
+
+                <label>Thumbnail:</label> <!-- Label for the image input field -->
+                <input type="file" id="coachThumbnail" accept="image/*"> <!-- File input for the coach's image -->
+
+                <button type="submit">Join</button> <!-- Button to submit the form and sign up -->
+            </form>
+        </section>
+
+        <!-- About Us section providing information about the service -->
+        <section id="about">
+            <h2>About Us</h2> <!-- Section title -->
+            <p>We are dedicated to helping gamers improve their skills by connecting them with expert coaches. Whether you're looking to master a specific game or improve your overall gaming strategy, we have the right coach for you.</p> <!-- Description of the service -->
+        </section>
+
+        <!-- Testimonials section showcasing user experiences -->
+        <section id="testimonials">
+            <h2>Testimonials</h2> <!-- Section title -->
+            <p>"Thanks to my coach, I improved my skills significantly and won my first tournament!" - Gamer123</p> <!-- Testimonial #1 -->
+            <p>"The coaching experience was fantastic! I learned so much in just a few sessions." - PlayerX</p> <!-- Testimonial #2 -->
+        </section>
+
+        <!-- Contact Us section with a form for inquiries -->
+        <section id="contact">
+            <h2>Contact Us</h2> <!-- Section title -->
+            <form id="contactForm"> <!-- Form for user inquiries -->
+                <label>Name:</label> <!-- Label for name input -->
+                <input type="text" id="contactName" required> <!-- Input field for user's name (required) -->
+
+                <label>Email:</label> <!-- Label for email input -->
+                <input type="email" id="contactEmail" required> <!-- Input field for user's email (required) -->
+
+                <label>Message:</label> <!-- Label for message input -->
+                <textarea id="contactMessage" required></textarea> <!-- Textarea for user's message (required) -->
+
+                <button type="submit">Send</button> <!-- Button to submit the contact form -->
+            </form>
+        </section>
+    </main>
+
+    <!-- Aside section
