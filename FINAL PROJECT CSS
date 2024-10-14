@@ -1,0 +1,275 @@
+/* General Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1c1c1c; /* Darker background for a more immersive look */
+    color: #d1d1d1; /* Light text for contrast */
+    text-align: center; /* Center text for the body */
+}
+
+/* Header Styling */
+header {
+    background-color: #181818; /* Very dark background for a bold header */
+    color: #00e6e6; /* Neon cyan color for a futuristic vibe */
+    padding: 50px;
+    font-size: 2em; /* Larger, impactful header font size */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-bottom: 4px solid #ff1a75; /* Neon pink accent for a sharp contrast */
+}
+
+/* Footer Styling */
+footer {
+    background-color: #181818;
+    color: #00e6e6;
+    padding: 20px;
+    font-size: 0.9em;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Styling */
+button {
+    background-color: #ff1a75; /* Neon pink button for attention */
+    color: #ffffff;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #e6005c; /* Darker neon pink on hover */
+    box-shadow: 0 6px 12px rgba(255, 26, 117, 0.7);
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Main Content Styling */
+main {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Navigation Bar Styles */
+nav {
+    background-color: #181818;
+    padding: 20px;
+}
+
+/* Dropdown Styling */
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+.dropbtn {
+    background-color: #181818;
+    color: #00e6e6;
+    padding: 16px 24px;
+    font-size: 16px;
+    border: 2px solid #00e6e6;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropbtn:hover {
+    background-color: #00e6e6;
+    color: #181818;
+    box-shadow: 0 4px 10px rgba(0, 230, 230, 0.5);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333333; /* Darker background for dropdown */
+    color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: #ffffff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #00e6e6;
+    color: #181818;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* FinalProject.css */
+
+/* Set up a container for the coach cards */
+#coaches-list {
+    display: flex;               /* Use flexbox for layout */
+    flex-wrap: wrap;            /* Allow cards to wrap to the next line if necessary */
+    justify-content: space-between; /* Distribute space between cards */
+    margin: 20px;               /* Add margin around the list */
+}
+
+/* Example CSS for the coach cards */
+.coach-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block; /* This allows cards to sit side by side */
+    width: 350px; /* Set a width for the card */
+    text-align: center; /* Center the text */
+}
+
+.coach-card img {
+    width: 340px;  /* Adjust the width as needed */
+    height: 340px; /* Adjust the height as needed */
+    object-fit: cover; /* Ensure the image covers the space without distortion */
+}
+
+/* Add hover effect for cards */
+.coach-card:hover {
+    transform: scale(1.05);     /* Slightly enlarge the card on hover */
+}
+
+/* Optional: Style for buttons */
+.coach-card button {
+    background-color: #007BFF; /* Button background color */
+    color: white;              /* Button text color */
+    border: none;              /* Remove border */
+    padding: 10px;            /* Button padding */
+    border-radius: 5px;       /* Round button corners */
+    cursor: pointer;           /* Change cursor on hover */
+}
+
+.coach-card button:hover {
+    background-color: #0056b3; /* Darken button on hover */
+}
+
+/* Form Styling */
+form#coachForm {
+    background-color: #2a2a2a;
+    padding: 40px;
+    border: 2px solid #ff1a75;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(255, 26, 117, 0.5);
+    margin: 0 auto; /* Center the form */
+}
+
+form#coachForm label {
+    color: #00e6e6;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+form#coachForm input,
+form#coachForm textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    background-color: #1c1c1c;
+    color: #d1d1d1;
+}
+
+form#coachForm button {
+    background-color: #00e6e6;
+    border: none;
+    color: #181818;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+form#coachForm button:hover {
+    background-color: #00cccc;
+    transform: scale(1.05);
+}
+
+/* Search Input Container */
+#search {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    margin: 20px 0; /* Add some margin for spacing */
+}
+/* Hide the delete button for Fido Master */
+.coach-card h3:contains("Fido Master") + button {
+    display: none;
+}
+
+
+/* Search Input Styling */
+#search input[type="text"] {
+    width: 400px; /* Width of the search bar */
+    padding: 20px; /* Increased padding for a taller appearance */
+    border: 1px solid #333;
+    border-radius: 6px;
+    background-color: #1c1c1c;
+    color: #d1d1d1;
+    font-size: 16px; /* Slightly larger text for better visibility */
+    transition: border-color 0.3s ease; /* Smooth transition for focus effect */
+}
+
+#search input[type="text"]:focus {
+    border-color: #ff1a75; /* Change border color on focus */
+    outline: none; /* Remove outline */
+}
+
+/* Search Button Styling */
+#search button {
+    background-color: #00e6e6; /* Neon cyan button */
+    border: none;
+    color: #181818;
+    padding: 20px; /* Match the height of the input */
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px; /* Space between input and button */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#search button:hover {
+    background-color: #00cccc; /* Darker cyan on hover */
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    #search {
+        flex-direction: column; /* Stack the search input and button */
+    }
+
+    #search input[type="text"] {
+        width: 100%; /* Make input full-width */
+        margin-bottom: 10px; /* Add margin between input and button */
+    }
+
+    #search button {
+        width: 100%; /* Make button full-width */
+    }
+
+    #coaches-list {
+        flex-direction: column; /* Stack cards vertically */
+        align-items: center; /* Center cards horizontally */
+    }
+
+    .coach-card {
+        width: 80%; /* Make cards responsive on smaller screens */
+    }
+}
