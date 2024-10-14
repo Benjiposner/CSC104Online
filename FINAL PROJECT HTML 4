@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Home</title>
+    <link rel="stylesheet" href="FinalProject.css">
+</head>
+<body>
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn">Menu &#x25BC;</button>
+            <div class="dropdown-content" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="coaches.html" id="allCoachesLink">All Available Coaches</a>
+                <a href="manage_coaches.html" id="manageCoachesLink">Manage Coaches</a>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="signup.html" id="signUpLink">Sign Up</a>
+                <a href="coachsignup.html" id="signUpCoachLink">Sign Up to be a Coach</a> 
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateLoginLogoutLink();
+            updateSignUpLink(loggedInUser); // Update sign-up link visibility
+            loadCoaches(); // Load coaches for the "All Available Coaches" page
+        };
+    
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+            if (loggedInUser) {
+                signUpLink.style.display = 'none'; // Hide if logged in
+            } else {
+                signUpLink.style.display = 'inline'; // Show if logged out
+                signUpLink.href = "signup.html"; // Set the sign-up link
+            }
+        }
+    
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = null; // Remove logout function
+            }
+        }
+    
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+    
+        // Ensure clicking "Manage Coaches" does not log out the user
+        document.getElementById('manageCoachesLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            if (!localStorage.getItem('loggedInUser')) {
+                alert('You need to be logged in to manage coaches.'); // Notify if not logged in
+                window.location.href = 'login.html'; // Redirect to login
+            } else {
+                window.location.href = 'manage_coaches.html'; // Redirect to manage coaches page
+            }
+        });
+    </script>
+    
+    
+    <!-- Page Content for Search and About Us -->
+    <main>
+        <h1>Find the Perfect Gaming Coach</h1>
+        <p>Enhance your skills with expert guidance!</p>
+        
+        <!-- Search section for finding coaches by name or game specialty -->
+        <section id="search">
+            <h2>Search Coaches</h2>
+            <input type="text" id="searchField" placeholder="Search by coach name or game..." oninput="filterCoaches()">
+            <button onclick="filterCoaches()">Search</button>
+        </section>
+
+        <!-- Coaches section to display the list of available coaches -->
+        <section id="coaches">
+            <h2>Some of the Available Coaches</h2>
+            <div id="coachList"></div>
+        </section>
+
+        <!-- About Us section providing information about the service -->
+        <section id="about">
+            <h2>About Us</h2>
+            <p>We are dedicated to helping gamers improve their skills by connecting them with expert coaches. Whether you're looking to master a specific game or improve your overall gaming strategy, we have the right coach for you.</p>
+        </section>
+
+        <!-- Sign Up as a Coach section -->
+        <section id="signup">
+            <h2>Sign Up as a Coach</h2>
+            <form id="coachForm" onsubmit="registerCoach(event)">
+                <label for="coachName">Name:</label>
+                <input type="text" id="coachName" required>
+                
+                <label for="coachEmail">Email:</label>
+                <input type="email" id="coachEmail" required>
+                
+                <label for="coachGame">Game Specialty:</label>
+                <input type="text" id="coachGame" required>
+
+                <label for="coachThumbnail">Thumbnail:</label>
+                <input type="file" id="coachThumbnail" accept="image/*">
+
+                <button type="submit">Join</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Gamify | Help: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+    </footer>
+
+    <!-- JavaScript to check login state, update dropdown menu, and load coaches -->
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateSignUpLink(loggedInUser);
+            updateLoginLogoutLink();
+
+            // Initialize localStorage with sample coaches data if not already present
+            const sampleCoaches = [
+                {
+                    "name": "John Doe",
+                    "game": "League of Legends",
+                    "thumbnail": "path/to/image.jpg",
+                    "email": "johndoe@example.com"
+                },
+                {
+                    "name": "Jane Smith",
+                    "game": "Dota 2",
+                    "thumbnail": "path/to/image2.jpg",
+                    "email": "janesmith@example.com"
+                }
+            ];
+
+            // Store sample coaches in localStorage only if it doesn't already exist
+            if (!localStorage.getItem('coaches')) {
+                localStorage.setItem('coaches', JSON.stringify(sampleCoaches));
+            }
+
+            loadCoaches(); // Load and display coaches from localStorage
+        };
+
+        // Update the sign-up link visibility based on login status
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+
+            if (loggedInUser) {
+                signUpLink.innerHTML = ''; // Hide Sign Up link if logged in
+            } else {
+                signUpLink.innerHTML = '<a href="signup.html">Sign Up</a>'; // Show Sign Up link if logged out
+            }
+        }
+
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = () => { window.location.href = 'login.html'; }; // Redirect to login page
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+
+        // Load and display coaches from localStorage
+        function loadCoaches() {
+            const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            const coachList = document.getElementById('coachList');
+            coachList.innerHTML = ''; // Clear current list
+
+            // Iterate through the coaches and create coach cards dynamically
+            coaches.forEach(coach => {
+                const coachCard = document.createElement('div');
+                coachCard.classList.add('coach-card');
+                
+                // Create the content of the coach card dynamically
+                coachCard.innerHTML = `
+                    <img src="${coach.thumbnail}" alt="${coach.name}">
+                    <div>
+                        <h3>${coach.name}</h3>
+                        <p>Expertise: ${coach.game}</p>
+                        <button onclick="sendEmail('${coach.email}')">Contact</button>
+                    </div>
+                `;
+                coachList.appendChild(coachCard); // Add the coach card to the page
+            });
+        }
+
+        // Filter coaches based on search input (by name or game)
+        function filterCoaches() {
+            const searchInput = document.getElementById('searchField').value.toLowerCase();
+            const coachList = JSON.parse(localStorage.getItem('coaches')) || [];
+            const coachContainer = document.getElementById('coachList');
+            coachContainer.innerHTML = ''; // Clear previous results
+
+            // Iterate through all coaches to find matches
+            coachList.forEach(coach => {
+                if (coach.name.toLowerCase().includes(searchInput) || coach.game.toLowerCase().includes(searchInput)) {
+                    const coachCard = document.createElement('div');
+                    coachCard.classList.add('coach-card');
+                    
+                    // Create the content of the coach card dynamically
+                    coachCard.innerHTML = `
+                        <img src="${coach.thumbnail}" alt="${coach.name}">
+                        <div>
+                            <h3>${coach.name}</h3>
+                            <p>Expertise: ${coach.game}</p>
+                            <button onclick="sendEmail('${coach.email}')">Contact</button>
+                        </div>
+                    `;
+                    coachContainer.appendChild(coachCard);
+                }
+            });
+        }
+
+        // Function to send an email
+        function sendEmail(email) {
+            window.location.href = `mailto:${email}`;
+        }
+
+        // Function to register a coach
+        function registerCoach(event) {
+            event.preventDefault(); // Prevent form submission
+            const name = document.getElementById('coachName').value;
+            const email = document.getElementById('coachEmail').value;
+            const game = document.getElementById('coachGame').value;
+            const thumbnail = document.getElementById('coachThumbnail').files[0];
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const newCoach = {
+                    name,
+                    email,
+                    game,
+                    thumbnail: reader.result
+                };
+
+                const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+                coaches.push(newCoach);
+                localStorage.setItem('coaches', JSON.stringify(coaches));
+
+                alert('Coach registered successfully!');
+                loadCoaches();
+                document.getElementById('coachForm').reset();
+            };
+            reader.readAsDataURL(thumbnail);
+        }
+    </script>
+</body>
+</html>
