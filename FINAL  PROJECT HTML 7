@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Login</title>
+    <link rel="stylesheet" href="FinalProject.css">
+</head>
+<body>
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn">Menu &#x25BC;</button>
+            <div class="dropdown-content" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="coaches.html" id="allCoachesLink">All Available Coaches</a>
+                <a href="manage_coaches.html" id="manageCoachesLink">Manage Coaches</a>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="signup.html" id="signUpLink">Sign Up</a>
+                <a href="coachsignup.html" id="signUpCoachLink">Sign Up to be a Coach</a> 
+            </div>
+        </div>
+    </nav>
+    
+    <main>
+        <h1>Login to Gamify</h1>
+        <section id="login">
+            <form id="userLoginForm" onsubmit="loginUser(event)">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" required>
+
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" required>
+
+                <button type="submit">Login</button>
+            </form>
+            <!-- Message area for user feedback -->
+            <div id="loginMessage" style="color: green; margin-top: 10px;"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Gamify | Help: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+    </footer>
+
+    <!-- JavaScript for handling login and navigation -->
+    <script>
+        window.onload = function() {
+            // Check if there are any users stored in localStorage; if not, create a default user.
+            if (!localStorage.getItem('users')) {
+                const users = [
+                    {
+                        "email": "user@example.com",
+                        "password": "userpassword",
+                        "username": "UserName"
+                    }
+                ];
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateLoginLogoutLink();
+            updateSignUpLink(loggedInUser); // Update sign-up link visibility
+
+            if (loggedInUser) {
+                // Redirect to homepage if already logged in
+                window.location.href = 'index.html'; 
+            }
+        };
+
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+            if (loggedInUser) {
+                signUpLink.style.display = 'none'; // Hide if logged in
+            } else {
+                signUpLink.style.display = 'inline'; // Show if logged out
+                signUpLink.href = "signup.html"; // Set the sign-up link
+            }
+        }
+
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = null; // Remove logout function
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+
+        // Ensure clicking "Manage Coaches" does not log out the user
+        document.getElementById('manageCoachesLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            if (!localStorage.getItem('loggedInUser')) {
+                alert('You need to be logged in to manage coaches.'); // Notify if not logged in
+                window.location.href = 'login.html'; // Redirect to login
+            } else {
+                window.location.href = 'manage_coaches.html'; // Redirect to manage coaches page
+            }
+        });
+
+        function loginUser(event) {
+            event.preventDefault(); // Prevent form submission from reloading the page
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Retrieve users from localStorage
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(user => user.email === email && user.password === password);
+
+            const loginMessage = document.getElementById('loginMessage');
+
+            if (user) {
+                // Store login state in localStorage
+                localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+                // Display welcome message
+                loginMessage.textContent = `Welcome back, ${user.username}! Redirecting...`;
+                loginMessage.style.color = 'green'; // Change message color to green for success
+
+                // Redirect to homepage after a short delay
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // Redirect to homepage after login
+                }, 1000); // Redirects after 1 second
+            } else {
+                // Display error message if login fails
+                loginMessage.textContent = 'Invalid email or password. Please try again.';
+                loginMessage.style.color = 'red'; // Change message color to red for errors
+            }
+        }
+    </script>
+</body>
+</html>
