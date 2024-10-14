@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Coaches</title>
+    <link rel="stylesheet" href="FinalProject.css">
+    <script>
+        // Array to store coach data
+        const Coaches = [];
+
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateSignUpLink(loggedInUser);
+            updateLoginLogoutLink();
+            loadCoaches(); // Load coaches from localStorage and static examples
+        };
+
+        // Update the sign-up link visibility based on login status
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+
+            if (loggedInUser) {
+                signUpLink.style.display = 'none'; // Hide if logged in
+            } else {
+                signUpLink.style.display = 'inline'; // Show if logged out
+                signUpLink.href = "signup.html"; // Set the sign-up link
+            }
+        }
+
+        // Update login/logout link based on login status
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink'); // Reference the correct element
+
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = null; // Remove logout function
+            }
+        }
+
+        // Function to log out the user
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+
+        // Function to load coaches from localStorage and display them
+        function loadCoaches() {
+            const storedCoaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            const staticCoaches = [
+                {
+                    name: "Valobeast",
+                    game: "Valorant",
+                    email: "jane@example.com",
+                    thumbnail: "https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/e7099cc13a665ed2b556d514e50984393ed49967-616x822.png"
+                }
+            ];
+
+            // Combine static coaches with those from localStorage
+            const allCoaches = [...storedCoaches, ...staticCoaches];
+            const loggedInUserEmail = localStorage.getItem('loggedInUserEmail'); // Get logged-in user's email
+
+            displayCoaches(allCoaches, loggedInUserEmail);
+        }
+
+        // Function to display coaches
+        function displayCoaches(allCoaches, loggedInUserEmail) {
+            const coachesList = document.getElementById('coaches-list');
+            coachesList.innerHTML = ''; // Clear the current list
+
+            allCoaches.forEach((coach, index) => {
+                const coachCard = document.createElement('div');
+                coachCard.classList.add('coach-card');
+
+                // Create the image element
+                const img = document.createElement('img');
+                img.src = coach.thumbnail || coach.image; // Use uploaded image data or thumbnail
+                img.alt = `${coach.name}'s thumbnail`;
+
+                // Create the name and specialization elements
+                const nameElement = document.createElement('h3');
+                nameElement.textContent = coach.name;
+
+                const specializationElement = document.createElement('p');
+                specializationElement.textContent = `Expertise: ${coach.game || coach.specialization}`;
+
+                // Create the delete button only for the coach who added the entry
+                if (coach.email === loggedInUserEmail) {
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('delete-button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.onclick = function() {
+                        deleteCoach(coach, index); // Function to delete the coach
+                    };
+                    coachCard.appendChild(deleteButton);
+                }
+
+                // Append elements to the card
+                coachCard.appendChild(img);
+                coachCard.appendChild(nameElement);
+                coachCard.appendChild(specializationElement);
+
+                // Append the card to the list
+                coachesList.appendChild(coachCard);
+            });
+        }
+
+        // Function to delete a coach
+        function deleteCoach(coachToDelete, index) {
+            const coachesFromStorage = JSON.parse(localStorage.getItem('coaches')) || [];
+            if (confirm("Are you sure you want to delete this coach?")) {
+                coachesFromStorage.splice(index, 1); // Remove the coach from the array
+                localStorage.setItem('coaches', JSON.stringify(coachesFromStorage)); // Update localStorage
+                loadCoaches(); // Refresh the displayed list
+            }
+        }
+
+        // Function to filter coaches based on search input
+        function filterCoaches() {
+            const searchInput = document.getElementById('searchField').value.toLowerCase();
+            const coachCards = document.querySelectorAll('.coach-card');
+
+            coachCards.forEach((card) => {
+                const coachName = card.querySelector('h3').textContent.toLowerCase();
+                const coachGame = card.querySelector('p').textContent.toLowerCase();
+
+                // Check if the search term matches the coach's name or game
+                if (coachName.includes(searchInput) || coachGame.includes(searchInput)) {
+                    card.style.display = 'block'; // Show the coach card if it matches
+                } else {
+                    card.style.display = 'none'; // Hide the coach card if it doesn't match
+                }
+            });
+        }
+
+        // Handle coach form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('coachForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form from submitting the traditional way
+
+                const name = document.getElementById('name').value;
+                const specialization = document.getElementById('specialization').value;
+                const imageInput = document.getElementById('image');
+                
+                // Check if an image is selected
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Create a coach object with the uploaded image data
+                        const coach = {
+                            name: name,
+                            specialization: specialization,
+                            image: e.target.result // This is the base64 image data
+                        };
+
+                        // Add the coach to the array and save to localStorage
+                        coaches.push(coach);
+                        localStorage.setItem('coaches', JSON.stringify(coaches));
+                        loadCoaches(); // Refresh the coach list
+                    };
+                    reader.readAsDataURL(imageInput.files[0]); // Read the image file
+                }
+            });
+        });
+
+        // Function to send an email (modify as needed)
+        function sendEmail(email) {
+            window.location.href = `mailto:${email}`;
+        }
+
+        // Add event listener to the "All Available Coaches" link
+        document.getElementById('allCoachesLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default anchor click behavior
+            loadCoaches(); // Load coaches from localStorage when clicked
+        });
+        // Remove "Fido Master" from localStorage
+    let coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+    coaches = coaches.filter(coach => coach.name !== 'Fido Master');
+    localStorage.setItem('coaches', JSON.stringify(coaches));
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn">Menu &#x25BC;</button>
+            <div class="dropdown-content" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="coaches.html" id="allCoachesLink">All Available Coaches</a>
+                <a href="manage_coaches.html" id="manageCoachesLink">Manage Coaches</a>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="signup.html" id="signUpLink">Sign Up</a>
+                <a href="coachsignup.html" id="signUpCoachLink">Sign Up to be a Coach</a> 
+            </div>
+        </div>
+    </nav>
+    <h1>Available Coaches</h1>
+
+    <input type="text" id="searchField" placeholder="Search Coaches..." onkeyup="filterCoaches()">
+    
+    <div id="coaches-list"></div>
+
+    <h2>Add a Coach</h2>
+    <form id="coachForm">
+        <input type="text" id="name" placeholder="Coach Name" required>
+        <input type="text" id="specialization" placeholder="Specialization" required>
+        <input type="file" id="image" accept="image/*" required>
+        <button type="submit">Add Coach</button>
+    </form>
+</body>
+</html>
