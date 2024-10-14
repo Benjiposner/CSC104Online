@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Sign Up for an Account</title>
+    <link rel="stylesheet" href="FinalProject.css">
+</head>
+<body>
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn">Menu &#x25BC;</button>
+            <div class="dropdown-content" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="coaches.html" id="allCoachesLink">All Available Coaches</a>
+                <a href="manage_coaches.html" id="manageCoachesLink">Manage Coaches</a>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="signup.html" id="signUpLink">Sign Up</a>
+                <a href="coachsignup.html" id="signUpCoachLink">Sign Up to be a Coach</a> 
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateLoginLogoutLink();
+            updateSignUpLink(loggedInUser); // Update sign-up link visibility
+            loadCoaches(); // Load coaches for the "All Available Coaches" page
+        };
+    
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+            if (loggedInUser) {
+                signUpLink.style.display = 'none'; // Hide if logged in
+            } else {
+                signUpLink.style.display = 'inline'; // Show if logged out
+                signUpLink.href = "signup.html"; // Set the sign-up link
+            }
+        }
+    
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = null; // Remove logout function
+            }
+        }
+    
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+    
+        // Ensure clicking "Manage Coaches" does not log out the user
+        document.getElementById('manageCoachesLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            if (!localStorage.getItem('loggedInUser')) {
+                alert('You need to be logged in to manage coaches.'); // Notify if not logged in
+                window.location.href = 'login.html'; // Redirect to login
+            } else {
+                window.location.href = 'manage_coaches.html'; // Redirect to manage coaches page
+            }
+        });
+    </script>
+    
+    <!-- Page Content for Sign Up -->
+    <main>
+        <h1>Sign Up</h1>
+
+        <!-- Sign Up Form for User Account -->
+        <section id="userSignup">
+            <h2>Sign Up for a Gamify Account</h2>
+            <form id="userSignupForm" onsubmit="registerUser(event)">
+                <label for="username">Username:</label>
+                <input type="text" id="username" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+
+                <button type="submit">Sign Up</button>
+            </form>
+        </section>
+
+        <!-- Sign Up Form for Coach Account -->
+        <section id="coachSignup">
+            <h2>Sign Up as a Coach</h2>
+            <form id="coachForm" onsubmit="registerCoach(event)">
+                <label for="coachName">Name:</label>
+                <input type="text" id="coachName" required>
+                
+                <label for="coachEmail">Email:</label>
+                <input type="email" id="coachEmail" required>
+                
+                <label for="coachGame">Game Specialty:</label>
+                <input type="text" id="coachGame" required>
+
+                <label for="coachThumbnail">Thumbnail:</label>
+                <input type="file" id="coachThumbnail" accept="image/*">
+
+                <button type="submit">Join</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Gamify | Help: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+    </footer>
+
+    <!-- JavaScript for handling sign-ups and login/logout functionality -->
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateSignUpLink(loggedInUser);
+            updateLoginLogoutLink();
+        };
+
+        // Update the sign-up link visibility based on login status
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+
+            if (loggedInUser) {
+                signUpLink.innerHTML = ''; // Hide Sign Up link if logged in
+            } else {
+                signUpLink.innerHTML = '<a href="signup.html">Sign Up</a>'; // Show Sign Up link if logged out
+            }
+        }
+
+        // Update login/logout link based on login status
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change to Logout
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change to Login
+                // No need for onclick to open modal, link will redirect to login.html
+            }
+        }
+
+        // Function to log out the user
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+
+        // Function to register a user
+        function registerUser(event) {
+            event.preventDefault(); // Prevent form submission from reloading the page
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Check if user already exists
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            const existingUser = users.find(user => user.email === email);
+
+            if (existingUser) {
+                alert('This email is already registered. Please log in.');
+                return;
+            }
+
+            // Add new user to localStorage
+            const newUser = { username, email, password };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert('Account created successfully! You can now log in.');
+            window.location.href = 'login.html'; // Redirect to login page after signup
+        }
+
+        // Function to register a coach
+        function registerCoach(event) {
+            event.preventDefault(); // Prevent form submission from reloading the page
+
+            const coachName = document.getElementById('coachName').value;
+            const coachEmail = document.getElementById('coachEmail').value;
+            const coachGame = document.getElementById('coachGame').value;
+            const coachThumbnail = document.getElementById('coachThumbnail').files[0];
+
+            // Check if coach already exists
+            let coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            const existingCoach = coaches.find(coach => coach.email === coachEmail);
+
+            if (existingCoach) {
+                alert('This email is already registered as a coach. Please log in.');
+                return;
+            }
+
+            // Create a coach object
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const newCoach = {
+                    name: coachName,
+                    email: coachEmail,
+                    game: coachGame,
+                    thumbnail: e.target.result // Store the image as a base64 string
+                };
+
+                // Add new coach to localStorage
+                coaches.push(newCoach);
+                localStorage.setItem('coaches', JSON.stringify(coaches));
+
+                alert('Coach account created successfully!');
+                window.location.href = 'coaches.html'; // Redirect to coaches page after signup
+            };
+            reader.readAsDataURL(coachThumbnail); // Read the file as a data URL
+        }
+
+        function loginUser(event) {
+            event.preventDefault(); // Prevent form submission from reloading the page
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Retrieve users from localStorage
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(user => user.email === email && user.password === password);
+
+            const loginMessage = document.getElementById('loginMessage');
+
+            if (user) {
+                // Store login state in localStorage
+                localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+                // Display welcome message without needing to click OK
+                loginMessage.textContent = `Welcome back, ${user.username}! Redirecting...`;
+                setTimeout(() => {
+                    updateLoginLogoutLink(); // Update link for logged-in state
+                    window.location.href = 'index.html'; // Redirect to home page after login
+                }, 2000);
+            } else {
+                alert('Invalid email or password. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
