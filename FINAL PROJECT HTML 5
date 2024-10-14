@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Manage Coaches</title>
+    <link rel="stylesheet" href="FinalProject.css">
+    <script>
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavLinks();
+            loadCoaches();
+        });
+
+        // Update navigation links based on user login state
+        function updateNavLinks() {
+            const loginLink = document.getElementById('loginLink');
+            const signUpLink = document.getElementById('signUpLink');
+            const loggedInUserEmail = localStorage.getItem('loggedInUserEmail');
+
+            if (loggedInUserEmail) {
+                loginLink.textContent = 'Logout';
+                loginLink.onclick = logoutUser;
+                signUpLink.style.display = 'none'; // Hide sign-up link
+            } else {
+                loginLink.textContent = 'Login';
+                loginLink.onclick = () => window.location.href = 'login.html';
+                signUpLink.style.display = 'inline'; // Show sign-up link
+            }
+        }
+
+        // Logout function
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('loggedInUserEmail');
+            alert('You have been logged out.');
+            updateNavLinks();
+            window.location.href = 'index.html'; // Redirect to home page
+        }
+
+        // Load coaches and display them
+        function loadCoaches() {
+            const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+            const coachesList = document.getElementById('coaches-list');
+            coachesList.innerHTML = ''; // Clear current list
+
+            const loggedInUserEmail = localStorage.getItem('loggedInUserEmail');
+
+            coaches.forEach((coach, index) => {
+                const coachCard = document.createElement('div');
+                coachCard.classList.add('coach-card');
+                coachCard.innerHTML = `
+                    <img src="${coach.thumbnail}" alt="${coach.name}">
+                    <h3>${coach.name}</h3>
+                    <p>Expertise: ${coach.game}</p>
+                    <button onclick="contactCoach('${coach.email}')">Contact</button>
+                `;
+                
+                // Show delete button only for "Fido Master" and the logged-in user's coach
+                if (coach.name === 'Fido Master' || coach.email === loggedInUserEmail) {
+                    coachCard.innerHTML += `<button onclick="deleteCoach(${index})">Remove</button>`;
+                }
+
+                coachesList.appendChild(coachCard);
+            });
+        }
+
+        // Contact coach via email
+        function contactCoach(email) {
+            window.location.href = `mailto:${email}`;
+        }
+
+        // Delete coach from localStorage
+        function deleteCoach(index) {
+            if (confirm("Are you sure you want to remove this coach?")) {
+                let coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+                
+                // Check if the coach being deleted is Fido Master or the logged-in user's coach
+                if (coaches[index].name === 'Fido Master' || coaches[index].email === localStorage.getItem('loggedInUserEmail')) {
+                    coaches.splice(index, 1); // Remove coach by index
+                    localStorage.setItem('coaches', JSON.stringify(coaches)); // Update localStorage
+                    loadCoaches(); // Reload coaches
+                    alert('The coach profile has been deleted.');
+                } else {
+                    alert('You can only delete your own coach profile or Fido Master.');
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn">Menu &#x25BC;</button>
+            <div class="dropdown-content" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="coaches.html" id="allCoachesLink">All Available Coaches</a>
+                <a href="manage_coaches.html" id="manageCoachesLink">Manage Coaches</a>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="signup.html" id="signUpLink">Sign Up</a>
+                <a href="coachsignup.html" id="signUpCoachLink">Sign Up to be a Coach</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Manage Coaches</h1>
+        <div id="coaches-list">
+            <!-- Coach cards will be populated dynamically -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Gamify | Help: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+    </footer>
+</body>
+</html>
