@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up to be a Coach</title>
+    <link rel="stylesheet" href="FinalProject.css">
+</head>
+<body>
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn">Menu &#x25BC;</button>
+            <div class="dropdown-content" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="coaches.html" id="allCoachesLink">All Available Coaches</a>
+                <a href="manage_coaches.html" id="manageCoachesLink">Manage Coaches</a>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="signup.html" id="signUpLink">Sign Up</a>
+                <a href="coachsignup.html" id="signUpCoachLink">Sign Up to be a Coach</a> 
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateLoginLogoutLink();
+            updateSignUpLink(loggedInUser); // Update sign-up link visibility
+            loadCoaches(); // Load coaches for the "All Available Coaches" page
+        };
+    
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+            if (loggedInUser) {
+                signUpLink.style.display = 'none'; // Hide if logged in
+            } else {
+                signUpLink.style.display = 'inline'; // Show if logged out
+                signUpLink.href = "signup.html"; // Set the sign-up link
+            }
+        }
+    
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = null; // Remove logout function
+            }
+        }
+    
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+    
+        // Ensure clicking "Manage Coaches" does not log out the user
+        document.getElementById('manageCoachesLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            if (!localStorage.getItem('loggedInUser')) {
+                alert('You need to be logged in to manage coaches.'); // Notify if not logged in
+                window.location.href = 'login.html'; // Redirect to login
+            } else {
+                window.location.href = 'manage_coaches.html'; // Redirect to manage coaches page
+            }
+        });
+    </script>
+    
+
+    <!-- Sign Up as a Coach Form -->
+    <main>
+        <h1>Sign Up to Become a Coach</h1>
+        <form id="coachForm" onsubmit="registerCoach(event)">
+            <label for="coachName">Name:</label>
+            <input type="text" id="coachName" required>
+            
+            <label for="coachEmail">Email:</label>
+            <input type="email" id="coachEmail" required>
+            
+            <label for="coachGame">Game Specialty:</label>
+            <input type="text" id="coachGame" required>
+
+            <label for="coachThumbnail">Thumbnail:</label>
+            <input type="file" id="coachThumbnail" accept="image/*">
+
+            <button type="submit">Join</button>
+        </form>
+    </main>
+
+    <!-- JavaScript to check login state and update menu -->
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateSignUpLink(loggedInUser);
+            updateLoginLogoutLink();
+
+            // Retain login status when navigating pages
+            if (!loggedInUser) {
+                alert("You must be logged in to sign up as a coach.");
+                window.location.href = "login.html"; // Redirect to login if not logged in
+            }
+        };
+
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+            if (loggedInUser) {
+                signUpLink.innerHTML = ''; // Hide Sign Up link if logged in
+            } else {
+                signUpLink.innerHTML = '<a href="signup.html">Sign Up</a>'; // Show Sign Up link if logged out
+            }
+        }
+
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout';
+                loginLink.onclick = logoutUser;
+            } else {
+                loginLink.textContent = 'Login';
+                loginLink.onclick = () => { window.location.href = 'login.html'; };
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser');
+            alert('You have been logged out.');
+            updateLoginLogoutLink();
+            window.location.href = 'index.html';
+        }
+
+        // Function to register a coach
+        function registerCoach(event) {
+            event.preventDefault(); // Prevent form submission
+            const name = document.getElementById('coachName').value;
+            const email = document.getElementById('coachEmail').value;
+            const game = document.getElementById('coachGame').value;
+            const thumbnail = document.getElementById('coachThumbnail').files[0];
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const newCoach = {
+                    name,
+                    email,
+                    game,
+                    thumbnail: reader.result
+                };
+
+                const coaches = JSON.parse(localStorage.getItem('coaches')) || [];
+                coaches.push(newCoach);
+                localStorage.setItem('coaches', JSON.stringify(coaches));
+
+                alert('Coach registered successfully!');
+                document.getElementById('coachForm').reset();
+            };
+            reader.readAsDataURL(thumbnail);
+        }
+    </script>
+    
+</body>
+</html>
