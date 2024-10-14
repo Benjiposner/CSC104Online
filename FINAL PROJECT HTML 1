@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Home</title>
+    <link rel="stylesheet" href="FinalProject.css">
+</head>
+<body>
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn">Menu &#x25BC;</button>
+            <div class="dropdown-content" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="coaches.html" id="allCoachesLink">All Available Coaches</a>
+                <a href="manage_coaches.html" id="manageCoachesLink">Manage Coaches</a>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="signup.html" id="signUpLink">Sign Up</a>
+                <a href="coachsignup.html" id="signUpCoachLink">Sign Up to be a Coach</a> 
+            </div>
+        </div>
+    </nav>
+    
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateLoginLogoutLink();
+            updateSignUpLink(loggedInUser); // Update sign-up link visibility
+            loadCoaches(); // Load coaches for the "All Available Coaches" page
+        };
+    
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+            if (loggedInUser) {
+                signUpLink.style.display = 'none'; // Hide if logged in
+            } else {
+                signUpLink.style.display = 'inline'; // Show if logged out
+                signUpLink.href = "signup.html"; // Set the sign-up link
+            }
+        }
+    
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = null; // Remove logout function
+            }
+        }
+    
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+    
+        // Ensure clicking "Manage Coaches" does not log out the user
+        document.getElementById('manageCoachesLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            if (!localStorage.getItem('loggedInUser')) {
+                alert('You need to be logged in to manage coaches.'); // Notify if not logged in
+                window.location.href = 'login.html'; // Redirect to login
+            } else {
+                window.location.href = 'manage_coaches.html'; // Redirect to manage coaches page
+            }
+        });
+    </script>
+    
+
+    <!-- Page Content for Page 1: Search and About Us -->
+    <main>
+        <h1>Find the Perfect Gaming Coach</h1>
+        <p>Enhance your skills with expert guidance!</p>
+
+        <!-- Search section for finding coaches by their game specialty -->
+        <section id="search">
+            <h2>Search Coaches</h2>
+            <input type="text" id="searchField" placeholder="Search by game..." oninput="filterCoaches()">
+        </section>
+
+        <!-- About Us section providing information about the service -->
+        <section id="about">
+            <h2>About Us</h2>
+            <p>We are dedicated to helping gamers improve their skills by connecting them with expert coaches. Whether you're looking to master a specific game or improve your overall gaming strategy, we have the right coach for you.</p>
+        </section>
+    </main>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Coaches</title>
+    <link rel="stylesheet" href="FinalProject.css">
+</head>
+<body>
+
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateLoginLogoutLink();
+            updateSignUpLink(loggedInUser); // Update sign-up link visibility
+            loadCoaches(); // Load coaches for the "All Available Coaches" page
+        };
+    
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+            if (loggedInUser) {
+                signUpLink.style.display = 'none'; // Hide if logged in
+            } else {
+                signUpLink.style.display = 'inline'; // Show if logged out
+                signUpLink.href = "signup.html"; // Set the sign-up link
+            }
+        }
+    
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = null; // Remove logout function
+            }
+        }
+    
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+    
+        // Ensure clicking "Manage Coaches" does not log out the user
+        document.getElementById('manageCoachesLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            if (!localStorage.getItem('loggedInUser')) {
+                alert('You need to be logged in to manage coaches.'); // Notify if not logged in
+                window.location.href = 'login.html'; // Redirect to login
+            } else {
+                window.location.href = 'manage_coaches.html'; // Redirect to manage coaches page
+            }
+        });
+    </script>
+    
+    <!-- Page Content for Page 2: Available Coaches and Testimonials -->
+    <main>
+        <h1>Available Coaches</h1>
+
+        <!-- Section displaying the list of available coaches -->
+        <section id="available">
+            <div id="coachList">
+                <div class="coach-card" data-game="Game A">
+                    <img src="https://purepng.com/public/uploads/thumbnail//new-dark-bomber-fortnite-skin-hon.png" alt="John Doe">
+                    <div>
+                        <h3>FidoMaster</h3>
+                        <p>Expertise: Fortnite</p>
+                        <button onclick="sendEmail('john@example.com')">Contact</button>
+                    </div>
+                </div>
+                <div class="coach-card" data-game="Game B">
+                    <img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/e7099cc13a665ed2b556d514e50984393ed49967-616x822.png" alt="Jane Smith">
+                    <div>
+                        <h3>Valobeast</h3>
+                        <p>Expertise: Valorant</p>
+                        <button onclick="sendEmail('jane@example.com')">Contact</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials section showcasing user experiences -->
+        <section id="testimonials">
+            <h2>Testimonials</h2>
+            <p>"Thanks to my coach, I improved my skills significantly and won my first tournament!" - Gamer123</p>
+            <p>"The coaching experience was fantastic! I learned so much in just a few sessions." - PlayerX</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Gamify | Help: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+    </footer>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamify - Sign Up</title>
+    <link rel="stylesheet" href="FinalProject.css">
+</head>
+<body>
+    
+    <script>
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            updateLoginLogoutLink();
+            updateSignUpLink(loggedInUser); // Update sign-up link visibility
+            loadCoaches(); // Load coaches for the "All Available Coaches" page
+        };
+    
+        function updateSignUpLink(loggedInUser) {
+            const signUpLink = document.getElementById('signUpLink');
+            if (loggedInUser) {
+                signUpLink.style.display = 'none'; // Hide if logged in
+            } else {
+                signUpLink.style.display = 'inline'; // Show if logged out
+                signUpLink.href = "signup.html"; // Set the sign-up link
+            }
+        }
+    
+        function updateLoginLogoutLink() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const loginLink = document.getElementById('loginLink');
+            if (loggedInUser) {
+                loginLink.textContent = 'Logout'; // Change text to 'Logout'
+                loginLink.onclick = logoutUser; // Set logout function on click
+            } else {
+                loginLink.textContent = 'Login'; // Change text to 'Login'
+                loginLink.onclick = null; // Remove logout function
+            }
+        }
+    
+        function logoutUser() {
+            localStorage.removeItem('loggedInUser'); // Remove user from localStorage
+            alert('You have been logged out.');
+            updateLoginLogoutLink(); // Update link for logged-out state
+            window.location.href = 'index.html'; // Redirect to home page after logout
+        }
+    
+        // Ensure clicking "Manage Coaches" does not log out the user
+        document.getElementById('manageCoachesLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            if (!localStorage.getItem('loggedInUser')) {
+                alert('You need to be logged in to manage coaches.'); // Notify if not logged in
+                window.location.href = 'login.html'; // Redirect to login
+            } else {
+                window.location.href = 'manage_coaches.html'; // Redirect to manage coaches page
+            }
+        });
+    </script>
+    
+
+
+    <!-- Page Content for Page 3: Sign Up Form -->
+    <main>
+        <h1>Sign Up as a Coach</h1>
+        <section id="signup">
+            <form id="coachForm" onsubmit="registerCoach(event)">
+                <label for="coachName">Name:</label>
+                <input type="text" id="coachName" required>
+                
+                <label for="coachEmail">Email:</label>
+                <input type="email" id="coachEmail" required>
+                
+                <label for="coachGame">Game Specialty:</label>
+                <input type="text" id="coachGame" required>
+
+                <label for="coachThumbnail">Thumbnail:</label>
+                <input type="file" id="coachThumbnail" accept="image/*">
+
+                <button type="submit">Join</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Gamify | Help: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+    </footer>
+</body>
+</html>
